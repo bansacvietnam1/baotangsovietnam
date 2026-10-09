@@ -1,0 +1,349 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ký Ức Sài Gòn — Bảo tàng số</title>
+
+<style>
+:root {
+  --bg:#100f0d;
+  --panel:#1b1915;
+  --gold:#d9b879;
+  --cream:#f3ead8;
+  --muted:#b0a797;
+  --line:#443a2b;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--cream);
+  font-family:Arial,sans-serif;
+}
+header{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:15px;padding:22px 5%;
+  border-bottom:1px solid var(--line);
+  background:#15130f;
+}
+.logo{font-weight:bold;letter-spacing:3px;color:var(--gold)}
+header small{color:var(--muted);letter-spacing:1px}
+.hero{padding:40px 5% 30px}
+.eyebrow{color:var(--gold);font-size:12px;letter-spacing:3px}
+h1{
+  font:normal clamp(36px,5vw,62px)/1.12 Georgia,serif;
+  margin:16px 0;
+}
+.hero p{max-width:750px;color:var(--muted);line-height:1.9}
+.layout{
+  padding:0 5% 38px;
+  display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,.9fr);
+  gap:20px;
+}
+.panel{
+  min-width:0;border:1px solid var(--line);
+  border-radius:14px;background:var(--panel);overflow:hidden;
+}
+.panel-head{
+  padding:16px 18px;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+}
+.panel-head h2{font-size:13px;font-weight:normal;letter-spacing:1px;margin:0}
+#scene{width:100%;height:500px;display:block;touch-action:pan-y}
+.scene-help{padding:0 18px 18px;color:var(--muted);font-size:12px;line-height:1.7}
+.detail{padding:22px}
+.number{font-size:12px;letter-spacing:2px;color:var(--gold)}
+h2.title{font:normal 31px Georgia,serif;margin:12px 0}
+.meta{font-size:12px;color:var(--muted);line-height:1.7}
+.description{font-size:14px;line-height:1.85;color:#e0d5c2}
+.story{border-top:1px solid var(--line);padding-top:14px;margin-top:17px}
+.story h3{font-size:12px;letter-spacing:1.5px;color:var(--gold)}
+.story p{font-size:13px;line-height:1.9;color:#ded5c6;white-space:pre-line}
+button{
+  background:#29251d;color:var(--cream);border:1px solid var(--line);
+  border-radius:7px;padding:11px 13px;cursor:pointer;font-size:12px;
+}
+button:hover{border-color:var(--gold)}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+button.primary{background:var(--gold);color:#19140b;border-color:var(--gold);font-weight:bold}
+button:disabled{opacity:.45;cursor:not-allowed}
+.controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.status{
+  background:#12110e;border:1px solid #30291e;border-radius:8px;
+  padding:13px;margin-top:15px;font-size:12px;line-height:1.7;color:var(--muted);
+}
+.progress{height:3px;background:#40372a;margin:9px 0;overflow:hidden}
+#progressBar{height:100%;width:0;background:var(--gold);transition:width .2s}
+.collection{padding:0 5% 45px}
+.collection h2{font:normal 30px Georgia,serif}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.artifact-card{min-height:130px;text-align:left;padding:16px}
+.artifact-card.active{border-color:var(--gold);background:#332a1d}
+.artifact-card strong{display:block;font-size:14px;margin:10px 0}
+.artifact-card span{font-size:11px;color:var(--muted);line-height:1.5}
+footer{border-top:1px solid var(--line);padding:24px 5%;color:var(--muted);font-size:12px;line-height:1.8}
+@media(max-width:950px){
+  .layout{grid-template-columns:1fr}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:500px){
+  header{align-items:flex-start;flex-direction:column}
+  #scene{height:370px}
+  .cards{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">KÝ ỨC SÀI GÒN</div>
+  <small>BẢO TÀNG SỐ · HÀNH TRÌNH QUA THỜI GIAN</small>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">DI SẢN · CON NGƯỜI · KÝ ỨC</div>
+  <h1>Một thành phố.<br>Ngàn câu chuyện.</h1>
+  <p>
+    Có những điều tưởng chừng nhỏ bé nhưng lại lưu giữ cả một thời đại:
+    âm thanh từ chiếc radio, một tấm ảnh đã phai màu, mái vòm của bưu điện
+    và nhịp sống không ngừng nghỉ nơi chợ cũ. Hãy bước vào không gian 3D,
+    khám phá từng hiện vật và lắng nghe những câu chuyện phía sau chúng.
+  </p>
+</section>
+
+<main class="layout">
+  <section class="panel">
+    <div class="panel-head">
+      <h2>01 / PHÒNG TRƯNG BÀY 3D</h2>
+      <button id="resetView">Đặt lại góc nhìn</button>
+    </div>
+    <div id="scene"></div>
+    <div class="scene-help">
+      Kéo để xoay phòng trưng bày · Cuộn để phóng to, thu nhỏ ·
+      Nhấn vào một hiện vật để mở hồ sơ · Các mô hình là bản dựng minh họa.
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>02 / HỒ SƠ HIỆN VẬT</h2>
+      <span class="eyebrow">LẮNG NGHE</span>
+    </div>
+    <div class="detail">
+      <div class="number" id="itemNumber"></div>
+      <h2 class="title" id="itemTitle"></h2>
+      <div class="meta" id="itemMeta"></div>
+      <p class="description" id="itemDescription"></p>
+
+      <div class="story">
+        <h3>BỐI CẢNH VÀ CÂU CHUYỆN</h3>
+        <p id="itemStory"></p>
+      </div>
+      <div class="story">
+        <h3>GIÁ TRỊ LỊCH SỬ VÀ VĂN HÓA</h3>
+        <p id="itemValue"></p>
+      </div>
+      <div class="story">
+        <h3>LỜI DẪN CỦA HƯỚNG DẪN VIÊN</h3>
+        <p id="itemGuide"></p>
+      </div>
+
+      <div class="controls">
+        <button class="primary" id="playOne">▶ Nghe hiện vật này</button>
+        <button id="pauseBtn">Ⅱ Tạm dừng</button>
+        <button id="resumeBtn">▶ Tiếp tục</button>
+        <button id="stopBtn">■ Dừng</button>
+      </div>
+
+      <div class="status" aria-live="polite">
+        <div id="speechStatus">Sẵn sàng bắt đầu chuyến tham quan.</div>
+        <div class="progress"><div id="progressBar"></div></div>
+        <div id="queueStatus">Chưa phát thuyết minh.</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<section class="collection">
+  <h2>Bốn dấu ấn của Sài Gòn</h2>
+  <p class="meta">Chọn một hiện vật để đọc câu chuyện hoặc nghe hướng dẫn viên thuyết minh.</p>
+  <div class="cards" id="cards"></div>
+  <div class="controls">
+    <button class="primary" id="playAll">▶ Nghe toàn bộ 4 hiện vật</button>
+    <button id="stopAll">■ Dừng toàn bộ</button>
+  </div>
+</section>
+
+<footer>
+  KÝ ỨC SÀI GÒN — BẢO TÀNG SỐ.
+  <br>
+  Các mô hình trong phiên bản này được dựng bằng hình khối 3D để minh họa,
+  không phải bản quét hiện vật hoặc công trình nguyên bản.
+  Nội dung giới thiệu mang tính giáo dục; khi sử dụng cho nghiên cứu chính thức,
+  cần đối chiếu niên đại và thông tin với tư liệu bảo tàng, cơ quan di sản
+  hoặc nguồn lịch sử đáng tin cậy.
+</footer>
+
+<script type="module">
+import * as THREE from
+  "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+import { OrbitControls } from
+  "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js";
+
+/* ======================================
+   1. BỐN BÀI THUYẾT MINH CHI TIẾT
+   ====================================== */
+
+const artifacts = [
+{
+  id:"radio",
+  name:"Chiếc radio xưa",
+  period:"Đời sống đô thị thế kỷ XX",
+  type:"Thiết bị nghe tin và giải trí",
+  description:
+`Một chiếc radio không chỉ là thiết bị điện tử. Trong nhiều gia đình, nó từng là cánh cửa đưa tin tức, âm nhạc và những câu chuyện từ thế giới bên ngoài vào căn nhà.`,
+  story:
+`Hãy thử hình dung một buổi tối ở Sài Gòn nhiều thập niên trước. Sau một ngày làm việc, các thành viên trong gia đình quây quần bên nhau. Một người xoay núm dò sóng, tiếng rè rè vang lên trong giây lát, rồi giọng phát thanh viên hoặc giai điệu quen thuộc bắt đầu truyền qua chiếc loa nhỏ.
+
+Khi truyền hình và Internet chưa trở thành phương tiện phổ biến như ngày nay, phát thanh giữ vai trò đáng kể trong việc chuyển tải tin tức, chương trình văn nghệ, thông báo và kiến thức. Một chiếc radio có thể được đặt trong phòng khách, cửa hàng, quán ăn hay nơi làm việc. Nhiều người cùng nghe một chương trình, cùng bàn luận về những điều vừa nghe thấy.
+
+Điều đặc biệt là radio đưa những sự kiện ở nơi xa đến gần với đời sống thường ngày. Âm thanh không cần hình ảnh vẫn có thể tạo nên một không gian tưởng tượng: người nghe hình dung giọng nói, khung cảnh và câu chuyện bằng trí nhớ của chính mình.`,
+  value:
+`Về mặt lịch sử, radio phản ánh sự phát triển của công nghệ truyền thông và cách con người tiếp nhận thông tin. Nó cho thấy công nghệ không chỉ thay đổi phương tiện mà còn thay đổi thói quen sinh hoạt, cách giải trí và cảm giác kết nối giữa các thành viên trong cộng đồng.
+
+Về mặt văn hóa, một chương trình phát thanh có thể gắn với ký ức của cả một thế hệ. Tiếng nhạc hiệu, giọng đọc hay âm thanh lúc dò sóng đôi khi gợi nhớ một căn nhà, một người thân hoặc một giai đoạn cuộc đời.
+
+Tuy vậy, không thể xác định chính xác tuổi đời hay chủ nhân của chiếc radio chỉ bằng vẻ ngoài. Muốn xác minh lịch sử của một hiện vật cụ thể, cần tìm nhãn hiệu, số máy, nơi sản xuất, tài liệu lưu trữ và lời kể có thể kiểm chứng.`,
+  guide:
+`Xin mời quý khách dừng lại trước chiếc radio này.
+
+Hãy quan sát mặt số, các núm điều chỉnh và phần loa. Mỗi chi tiết đều gắn với một cách con người từng tiếp cận thông tin. Ngày nay, chúng ta có thể chọn nghe bất kỳ nội dung nào trên điện thoại chỉ trong vài giây. Nhưng với chiếc radio, người nghe thường phải dò đúng tần số và chờ chương trình yêu thích bắt đầu.
+
+Hãy tưởng tượng một đứa trẻ ngồi cạnh ông bà, nghe một câu chuyện được phát qua loa. Đứa trẻ ấy có thể không nhớ tên chương trình, nhưng nhiều năm sau vẫn nhớ âm thanh của buổi tối hôm đó.
+
+Đó chính là điều khiến hiện vật trở nên quý giá: giá trị của nó không chỉ nằm ở vật liệu hay công nghệ, mà còn ở những khoảnh khắc con người từng chia sẻ cùng nhau.
+
+Nếu chiếc radio này có thể kể chuyện, có lẽ nó sẽ kể về những giọng nói đã đi qua căn phòng, những bản nhạc từng làm ai đó vui lên và những phút giây cả gia đình cùng hướng về một âm thanh duy nhất.`
+},
+{
+  id:"camera",
+  name:"Máy ảnh phim",
+  period:"Lịch sử nhiếp ảnh thế kỷ XX",
+  type:"Dụng cụ ghi lại hình ảnh",
+  description:
+`Máy ảnh phim giúp lưu giữ những khoảnh khắc bằng cách ghi ánh sáng lên vật liệu cảm quang. Mỗi bức ảnh là kết quả của một lần lựa chọn góc nhìn và chờ đợi.`,
+  story:
+`Trước khi máy ảnh kỹ thuật số trở nên phổ biến, chụp ảnh đòi hỏi nhiều bước chuẩn bị. Người chụp phải lắp phim, điều chỉnh tiêu cự và độ phơi sáng, quan sát khung hình rồi mới bấm máy. Một cuộn phim có số khung hình giới hạn, vì vậy mỗi lần chụp thường được cân nhắc kỹ hơn.
+
+Sau khi chụp, phim cần được tráng và ảnh được in hoặc phóng lớn. Người chụp không phải lúc nào cũng nhìn thấy kết quả ngay lập tức. Khoảng thời gian chờ đợi ấy tạo nên một trải nghiệm khác với việc chụp và xem ảnh tức thì trên điện thoại ngày nay.
+
+Tại một đô thị luôn biến đổi như Sài Gòn, máy ảnh có thể đã ghi lại những con đường, bảng hiệu, hàng quán, phương tiện giao thông, chân dung gia đình và những dịp đặc biệt. Khi cảnh vật thay đổi, những tấm ảnh cũ trở thành manh mối giúp người đời sau hình dung diện mạo của thành phố trong quá khứ.`,
+  value:
+`Máy ảnh và ảnh tư liệu có giá trị trong việc nghiên cứu lịch sử thị giác. Một bức ảnh có thể lưu lại chi tiết mà văn bản không đề cập đến: kiểu trang phục, cách bài trí cửa hàng, biển hiệu, kiến trúc hoặc phương tiện trên đường phố.
+
+Tuy nhiên, ảnh không tự kể đầy đủ câu chuyện. Góc chụp có thể chỉ cho thấy một phần của khung cảnh; chú thích có thể bị thất lạc; ngày chụp và danh tính người trong ảnh có thể chưa rõ. Vì vậy, việc bảo tồn ảnh cần đi kèm việc ghi lại nguồn gốc, thời gian, địa điểm, tác giả và câu chuyện của người sở hữu.
+
+Chiếc máy ảnh còn gợi nhắc rằng ký ức được tạo nên từ lựa chọn của con người: điều gì được chụp lại, điều gì nằm ngoài khung hình và khoảnh khắc nào được xem là đáng lưu giữ.`,
+  guide:
+`Quý khách hãy nhìn vào ống kính của chiếc máy ảnh. Phía sau vòng kính nhỏ này là một cách nhìn về thế giới.
+
+Hãy tưởng tượng một người chụp ảnh đứng trên con phố Sài Gòn nhiều năm trước. Người ấy quan sát dòng người qua lại, chờ ánh sáng phù hợp và bấm máy đúng lúc một khoảnh khắc xuất hiện. Có thể đó là một cửa hiệu vừa mở cửa, một gia đình chụp ảnh kỷ niệm hoặc một góc phố đã không còn giống ngày nay.
+
+Bức ảnh sau đó có thể nằm trong album của một gia đình suốt nhiều thập niên. Khi con cháu mở album, họ không chỉ nhìn thấy gương mặt người thân mà còn thấy một phần của thành phố, một kiểu trang phục và một nếp sống đã thay đổi.
+
+Máy ảnh không thể giữ thời gian đứng yên. Nhưng nó có thể giữ lại một dấu vết để chúng ta đối thoại với quá khứ. Xin quý khách hãy tự hỏi: nếu được chụp lại một khoảnh khắc của Sài Gòn hôm nay để người sống sau chúng ta nhìn thấy, quý khách sẽ chọn điều gì?`
+},
+{
+  id:"post",
+  name:"Bưu điện Trung tâm Sài Gòn",
+  period:"Di sản kiến trúc và liên lạc",
+  type:"Công trình lịch sử đô thị",
+  description:
+`Bưu điện Trung tâm Sài Gòn là công trình nổi bật trong khu vực trung tâm Thành phố Hồ Chí Minh, gắn với lịch sử bưu chính, liên lạc và diện mạo kiến trúc đô thị.`,
+  story:
+`Trong lịch sử đô thị, bưu điện là một phần của mạng lưới kết nối con người. Thư từ, giấy tờ và thông tin được chuyển qua một hệ thống gồm người gửi, nhân viên bưu chính, tuyến vận chuyển và người nhận. Khi chưa có phương tiện liên lạc tức thời, một lá thư có thể là cách quan trọng để gia đình, bạn bè hoặc đối tác trao đổi tin tức.
+
+Bưu điện Trung tâm Sài Gòn thường được nhắc đến bởi không gian nội thất rộng, hệ thống vòm và các chi tiết kiến trúc đặc trưng. Công trình thuộc lớp kiến trúc hình thành trong giai đoạn cuối thế kỷ XIX và đầu thế kỷ XX, khi diện mạo trung tâm thành phố có nhiều biến đổi. Những đặc điểm kiến trúc ấy khiến bưu điện không chỉ được nhìn nhận qua chức năng sử dụng mà còn như một dấu mốc trong cảnh quan đô thị.
+
+Theo thời gian, phương thức liên lạc thay đổi mạnh mẽ. Điện thoại và các công nghệ số khiến nhiều thông điệp được gửi đi nhanh hơn. Dẫu vậy, những công trình bưu chính lịch sử vẫn giúp chúng ta hiểu được cách thành phố từng tổ chức hoạt động liên lạc và dịch vụ công cộng.`,
+  value:
+`Giá trị của bưu điện nằm ở cả kiến trúc, công năng và ký ức xã hội. Một công trình công cộng có thể chứng kiến nhiều thế hệ đến gửi thư, nhận tin, làm thủ tục hoặc gặp gỡ. Nó cũng phản ánh cách tổ chức không gian đô thị và sự thay đổi của công nghệ liên lạc.
+
+Bảo tồn di sản không chỉ là sửa chữa mặt ngoài. Việc bảo tồn có ý nghĩa hơn khi kiến trúc được gìn giữ cùng hồ sơ lịch sử, công năng qua từng giai đoạn, tư liệu hình ảnh và câu chuyện của cộng đồng.
+
+Khi giới thiệu một công trình lịch sử, cần phân biệt dữ kiện đã được xác minh với lời kể hoặc cách diễn giải. Các mốc xây dựng, tên người thiết kế, lần tu bổ và chi tiết kỹ thuật nên được kiểm chứng bằng hồ sơ di sản hoặc nguồn tư liệu chính thức.`,
+  guide:
+`Xin mời quý khách hình dung một thời kỳ mà lá thư là cầu nối quan trọng giữa những người sống xa nhau.
+
+Một người viết thư có thể dành nhiều thời gian lựa chọn lời lẽ. Sau khi ghi địa chỉ và gửi đi, họ chờ đợi hồi âm mà không biết chính xác khi nào thư sẽ đến. Với người nhận, phong bì mang đến không chỉ thông tin mà còn là cảm giác được kết nối với người đang ở nơi khác.
+
+Bây giờ, hãy chuyển sự chú ý từ câu chuyện lá thư sang chính công trình này. Hãy tưởng tượng những bước chân đi qua sảnh, những cuộc trò chuyện ngắn bên quầy và dòng người đến rồi rời khỏi tòa nhà qua nhiều năm tháng. Mỗi người có một mục đích riêng, nhưng tất cả đều sử dụng chung một không gian kết nối.
+
+Ngày nay, thông tin có thể đi qua mạng chỉ trong chớp mắt. Thế nhưng công trình vẫn nhắc chúng ta rằng mọi phương tiện liên lạc, dù cổ điển hay hiện đại, đều bắt đầu từ một nhu cầu rất con người: muốn gửi đi điều gì đó và mong có người ở nơi khác đón nhận.
+
+Di sản không chỉ là một tòa nhà đẹp. Đó còn là bằng chứng về cách con người từng sống, làm việc và kết nối với nhau.`
+},
+{
+  id:"market",
+  name:"Chợ Bến Thành",
+  period:"Thương mại và đời sống Sài Gòn",
+  type:"Không gian chợ truyền thống",
+  description:
+`Chợ Bến Thành là một địa điểm thương mại nổi tiếng của Thành phố Hồ Chí Minh, gắn với hoạt động mua bán, ẩm thực, giao tiếp và hình ảnh quen thuộc của đô thị.`,
+  story:
+`Một khu chợ không chỉ là nơi hàng hóa được trao đổi. Đó còn là không gian nơi người bán và người mua nhận ra nhau, hỏi thăm chuyện gia đình, thương lượng giá cả và chia sẻ tin tức. Nhịp sống của chợ thường bắt đầu từ rất sớm, khi hàng hóa được đưa đến, sạp hàng được chuẩn bị và người mua bắt đầu lựa chọn những thứ cần thiết trong ngày.
+
+Chợ Bến Thành đã trải qua những thay đổi cùng lịch sử phát triển của thành phố. Hình ảnh tháp đồng hồ ở mặt chính của công trình trở thành dấu hiệu nhận diện quen thuộc. Chợ cũng là nơi người dân và du khách có thể tiếp xúc với nhiều loại hàng hóa, món ăn và cách giao tiếp phản ánh sự đa dạng của đời sống đô thị.
+
+Mỗi gian hàng có thể mang một câu chuyện riêng: nghề nghiệp được truyền qua nhiều thế hệ, công thức món ăn gắn với ký ức gia đình hoặc cách buôn bán thích nghi trước sự thay đổi của khách hàng và thành phố. Những câu chuyện như vậy làm cho chợ trở thành một không gian sống, không chỉ là một công trình kiến trúc.`,
+  value:
+`Chợ là nguồn tư liệu quan trọng để tìm hiểu kinh tế đời thường và văn hóa cộng đồng. Qua hàng hóa, ngôn ngữ, tập quán mua bán và những mối quan hệ giữa người bán với khách quen, chúng ta có thể quan sát sự thay đổi trong lối sống và nhu cầu của cư dân.
+
+Giá trị của chợ không chỉ nằm ở hình dáng tòa nhà mà còn ở những người làm việc tại đó, kỹ năng nghề nghiệp, ký ức và các mối quan hệ được duy trì qua thời gian. Khi đô thị phát triển, hoạt động thương mại có thể thay đổi, nhưng các khu chợ truyền thống vẫn là nơi thể hiện sự tương tác trực tiếp giữa con người.
+
+Để tìm hiểu lịch sử chính xác của chợ Bến Thành, cần phân biệt các địa điểm và giai đoạn hình thành khác nhau, đồng thời kiểm tra niên đại, quá trình xây dựng và tu bổ qua nguồn tư liệu đáng tin cậy.`,
+  guide:
+`Xin mời quý khách thử tưởng tượng một buổi sáng ở chợ. Tiếng bước chân, tiếng mời chào, tiếng hỏi giá và mùi hương từ các quầy hàng hòa vào nhau tạo nên một nhịp điệu rất riêng.
+
+Ở đây, mỗi cuộc trao đổi đều là một cuộc gặp giữa con người với con người. Người mua tìm kiếm thứ mình cần; người bán dựa vào kinh nghiệm để giới thiệu hàng hóa; khách quen có thể dừng lại hỏi thăm vài câu trước khi tiếp tục công việc trong ngày.
+
+Hãy nhìn chợ không chỉ bằng đôi mắt của một du khách mà còn bằng góc nhìn của người nghiên cứu đời sống. Một mặt hàng cho biết điều gì về nhu cầu của cư dân? Một món ăn phản ánh những giao thoa văn hóa nào? Một gian hàng lâu năm đã thích nghi ra sao khi thành phố thay đổi?
+
+Những câu hỏi ấy giúp chúng ta hiểu rằng văn hóa không chỉ hiện diện trong bảo tàng, sách vở hay những dịp lễ lớn. Văn hóa còn sống trong cách người ta làm việc, trò chuyện, trao đổi và chăm sóc gia đình mỗi ngày.
+
+Chợ Bến Thành vì thế vừa là địa điểm thương mại vừa là một phần ký ức đô thị. Khi bước ra khỏi khu chợ, quý khách có thể mang theo nhiều hơn một món hàng: đó là sự hiểu biết sâu sắc hơn về nhịp sống và con người Sài Gòn.`
+}
+];
+
+/* ======================================
+   2. HIỂN THỊ HỒ SƠ VÀ DANH SÁCH
+   ====================================== */
+
+const $ = id => document.getElementById(id);
+let selected = 0;
+
+function renderArtifact(index){
+  selected = index;
+  const a = artifacts[index];
+
+  $("itemNumber").textContent =
+    `HIỆN VẬT ${String(index+1).padStart(2,"0")} / 04`;
+  $("itemTitle").textContent = a.name;
+  $("itemMeta").textContent = a.period + " · " + a.type;
+  $("itemDescription").textContent = a.description;
+  $("itemStory").textContent = a.story;
+  $("itemValue").textContent = a.value;
+  $("itemGuide").textContent = a.guide;
+
+  document.querySelectorAll(".artifact-card").forEach((card,i)=>{
+    card.classList.toggle("active",i===index);
+  });
+
+  objects3D.forEach((obj,i)=>{
+    obj.traverse(part=>{
+      if(!part.isMesh || !part.material) return;
+      const mats = Array.isArray(part.material) ? part.material : [part.material];
+      mats.forEach(m=>{
+        if(m.emissive){
+          m.emissive.set(i===index ? 0x5c3810 : 0x000000);
+          m.emissiveIntensity = i===index ? 0.65 :
