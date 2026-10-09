@@ -1,0 +1,882 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ký Ức Sài Gòn | Bảo tàng số</title>
+
+<style>
+:root {
+  --bg: #11110f;
+  --panel: #1c1b18;
+  --gold: #d7b77a;
+  --cream: #f1e8d5;
+  --muted: #aaa397;
+  --line: #38352e;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--cream);
+  font-family: Arial, sans-serif;
+}
+header {
+  padding: 24px 5%;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.logo {
+  color: var(--gold);
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+header small { color: var(--muted); }
+.hero {
+  padding: 35px 5% 24px;
+}
+.eyebrow {
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 12px;
+}
+h1 {
+  font-family: Georgia, serif;
+  font-size: clamp(34px, 5vw, 58px);
+  font-weight: normal;
+  margin: 12px 0;
+}
+p { line-height: 1.75; }
+.hero p { max-width: 720px; color: var(--muted); }
+.layout {
+  padding: 0 5% 40px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr);
+  gap: 20px;
+}
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  min-width: 0;
+}
+.panel-head {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: center;
+}
+.panel-head h2 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: normal;
+}
+#scene {
+  width: 100%;
+  height: 430px;
+  display: block;
+  touch-action: pan-y;
+}
+.scene-help {
+  padding: 0 18px 18px;
+  color: var(--muted);
+  font-size: 12px;
+}
+button {
+  cursor: pointer;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #292720;
+  color: var(--cream);
+  padding: 10px 13px;
+  font-size: 13px;
+}
+button:hover { border-color: var(--gold); }
+button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+}
+button.primary {
+  background: var(--gold);
+  color: #17140e;
+  border-color: var(--gold);
+  font-weight: bold;
+}
+button:disabled { opacity: .45; cursor: not-allowed; }
+.detail { padding: 20px; }
+.number {
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+h2.title {
+  font: normal 29px Georgia, serif;
+  margin: 10px 0;
+}
+.meta { color: var(--muted); font-size: 13px; }
+.description { color: #ded5c5; font-size: 14px; }
+.story {
+  border-top: 1px solid var(--line);
+  padding-top: 15px;
+  margin-top: 15px;
+}
+.story h3 { font-size: 14px; color: var(--gold); }
+.story p { font-size: 14px; }
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+.status {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #12120f;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.progress {
+  height: 3px;
+  background: #3a362d;
+  margin-top: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+#progressBar {
+  width: 0%;
+  height: 100%;
+  background: var(--gold);
+  transition: width .2s;
+}
+.collection { padding: 0 5% 45px; }
+.collection h2 {
+  font: normal 28px Georgia, serif;
+}
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.artifact-card {
+  text-align: left;
+  padding: 16px;
+  min-height: 115px;
+}
+.artifact-card.active {
+  border-color: var(--gold);
+  background: #302b20;
+}
+.artifact-card strong {
+  display: block;
+  margin: 8px 0;
+}
+.artifact-card span { color: var(--muted); font-size: 12px; }
+footer {
+  border-top: 1px solid var(--line);
+  padding: 22px 5%;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+@media(max-width: 850px) {
+  .layout { grid-template-columns: 1fr; }
+  #scene { height: 350px; }
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media(max-width: 430px) {
+  header { align-items: flex-start; flex-direction: column; }
+  .cards { grid-template-columns: 1fr; }
+  .controls button { flex: 1 1 auto; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="logo">KÝ ỨC SÀI GÒN</div>
+  <small>BẢO TÀNG SỐ · KHÔNG GIAN KÝ ỨC</small>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Di sản · Con người · Thời gian</div>
+  <h1>Chạm vào ký ức,<br>lắng nghe Sài Gòn.</h1>
+  <p>
+    Mỗi hiện vật là một cánh cửa mở về quá khứ.
+    Hãy khám phá không gian 3D, lựa chọn hiện vật và lắng nghe
+    câu chuyện phía sau những dấu tích của Sài Gòn xưa.
+  </p>
+</section>
+
+<main class="layout">
+  <section class="panel">
+    <div class="panel-head">
+      <h2>01 / KHÔNG GIAN TRƯNG BÀY 3D</h2>
+      <button id="resetView">Đặt lại góc nhìn</button>
+    </div>
+    <div id="scene" aria-label="Không gian trưng bày hiện vật 3D"></div>
+    <div class="scene-help">
+      Kéo để xoay không gian · Cuộn hoặc chụm hai ngón tay để phóng to,
+      thu nhỏ · Nhấn vào hiện vật để tìm hiểu.
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-head">
+      <h2>02 / HỒ SƠ HIỆN VẬT</h2>
+      <span class="eyebrow">Lắng nghe</span>
+    </div>
+    <div class="detail">
+      <div class="number" id="itemNumber">HIỆN VẬT 01</div>
+      <h2 class="title" id="itemTitle">Chiếc radio xưa</h2>
+      <div class="meta" id="itemMeta"></div>
+      <p class="description" id="itemDescription"></p>
+
+      <div class="story">
+        <h3>CÂU CHUYỆN HIỆN VẬT</h3>
+        <p id="itemStory"></p>
+      </div>
+
+      <div class="story">
+        <h3>GIÁ TRỊ LỊCH SỬ VÀ VĂN HÓA</h3>
+        <p id="itemValue"></p>
+      </div>
+
+      <div class="story">
+        <h3>LỜI DẪN CỦA HƯỚNG DẪN VIÊN</h3>
+        <p id="itemGuide"></p>
+      </div>
+
+      <div class="controls">
+        <button class="primary" id="playOne">▶ Nghe hiện vật này</button>
+        <button id="pauseBtn">Ⅱ Tạm dừng</button>
+        <button id="resumeBtn">▶ Tiếp tục</button>
+        <button id="stopBtn">■ Dừng</button>
+      </div>
+
+      <div class="status" aria-live="polite">
+        <div id="speechStatus">Sẵn sàng thuyết minh.</div>
+        <div class="progress"><div id="progressBar"></div></div>
+        <div id="queueStatus">Chưa phát danh sách thuyết minh.</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<section class="collection">
+  <h2>Khám phá bộ sưu tập</h2>
+  <p class="meta">Chọn một hiện vật để đọc nội dung và nghe thuyết minh.</p>
+  <div class="cards" id="cards"></div>
+  <div class="controls">
+    <button class="primary" id="playAll">▶ Nghe toàn bộ hiện vật</button>
+    <button id="stopAll">■ Dừng toàn bộ</button>
+  </div>
+</section>
+
+<footer>
+  KÝ ỨC SÀI GÒN — Bảo tàng số phục vụ học tập và khám phá văn hóa.
+  <br>
+  Lưu ý: Các mô hình 3D trong phiên bản này là mô hình minh họa,
+  không phải bản quét hiện vật gốc. Nội dung cần được đối chiếu với
+  tư liệu bảo tàng và nguồn lịch sử đáng tin cậy trước khi sử dụng
+  như tài liệu nghiên cứu chính thức.
+</footer>
+
+<script type="module">
+import * as THREE from
+  "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+import { OrbitControls } from
+  "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js";
+
+/* =========================
+   1. NỘI DUNG THUYẾT MINH
+   Mỗi hiện vật có một bài riêng.
+   ========================= */
+
+const artifacts = [
+{
+  id: "radio",
+  name: "Chiếc radio xưa",
+  period: "Đồ dùng sinh hoạt thế kỷ XX",
+  type: "Thiết bị nghe tin và giải trí",
+  description:
+    "Chiếc radio gợi nhớ thời kỳ mà việc nghe tin tức, âm nhạc và các chương trình phát thanh là một hoạt động quen thuộc trong nhiều gia đình.",
+  story:
+    "Hãy tưởng tượng một buổi tối ở Sài Gòn nhiều thập niên trước. Sau một ngày làm việc, các thành viên trong gia đình ngồi gần nhau, bật chiếc radio và chăm chú lắng nghe chương trình phát thanh. Âm thanh phát ra từ chiếc hộp nhỏ có thể mang đến tin tức, ca nhạc, chuyện kể và những thông báo quan trọng. Khi chưa có điện thoại thông minh hay mạng xã hội, radio giúp người nghe kết nối với thế giới bên ngoài. Mỗi chương trình có thể trở thành một phần ký ức chung của gia đình và khu phố.",
+  value:
+    "Radio cho thấy sự thay đổi của đời sống truyền thông đô thị. Nó không chỉ là một thiết bị điện tử mà còn là nơi lưu giữ thói quen nghe tin, thưởng thức âm nhạc và chia sẻ thời gian giữa các thế hệ. Khi nghiên cứu một chiếc radio cụ thể, cần kiểm tra nhãn hiệu, nơi sản xuất, niên đại và lịch sử sở hữu để xác định chính xác nguồn gốc của nó.",
+  guide:
+    "Xin mời quý khách quan sát chiếc radio trước mặt. Hãy chú ý đến những nút điều chỉnh, mặt số và hình dáng bên ngoài. Những chi tiết tưởng chừng rất nhỏ có thể kể câu chuyện về công nghệ và gu thẩm mỹ của một thời. Nếu chiếc radio này từng thuộc về một gia đình ở Sài Gòn, những âm thanh vang lên từ nó có thể đã đồng hành cùng bữa cơm, những buổi sum họp và các sự kiện đáng nhớ. Chúng ta hãy thử tự hỏi: nếu chiếc radio có thể kể chuyện, nó sẽ nhớ giọng nói nào nhất?"
+},
+{
+  id: "camera",
+  name: "Máy ảnh phim",
+  period: "Nhiếp ảnh thế kỷ XX",
+  type: "Dụng cụ ghi lại hình ảnh",
+  description:
+    "Máy ảnh phim gợi nhắc thời kỳ mỗi bức ảnh cần được chuẩn bị, chụp trên phim và xử lý để trở thành tấm hình có thể lưu giữ.",
+  story:
+    "Trước khi ảnh kỹ thuật số phổ biến, máy ảnh phim là công cụ ghi lại chân dung gia đình, đám cưới, đường phố và những chuyến đi. Người chụp phải cân nhắc trước mỗi lần bấm máy vì số khung hình trên cuộn phim có giới hạn. Sau khi chụp, cuộn phim thường cần được tráng và ảnh được in ra. Bởi vậy, khoảnh khắc xem những tấm ảnh vừa rửa có thể mang lại cảm giác chờ đợi đặc biệt. Những bức ảnh còn sót lại ngày nay giúp chúng ta hình dung phần nào diện mạo của thành phố và cuộc sống của người dân trong quá khứ.",
+  value:
+    "Máy ảnh phim có ý nghĩa với lịch sử thị giác của đô thị. Ảnh tư liệu có thể ghi lại kiến trúc, trang phục, phương tiện giao thông và sinh hoạt thường ngày. Tuy nhiên, một bức ảnh chỉ trở thành tư liệu đáng tin cậy khi người nghiên cứu xác minh được thời gian, địa điểm, người chụp và bối cảnh của nó.",
+  guide:
+    "Quý khách hãy quan sát ống kính và thân máy. Đây là những bộ phận gắn với hành trình biến ánh sáng thành hình ảnh lưu giữ trên phim. Hãy thử hình dung một người chụp ảnh đứng trên con đường Sài Gòn đông đúc, chờ đúng khoảnh khắc để ghi lại một chiếc xe chạy qua hay một cửa hiệu vừa mở cửa. Tấm ảnh ấy có thể trở thành dấu vết quý giá khi cảnh vật đã đổi thay. Máy ảnh không chỉ ghi lại gương mặt; nó còn giúp các thế hệ sau nhìn thấy một thành phố mà họ chưa từng sống trong đó."
+},
+{
+  id: "post",
+  name: "Bưu điện Sài Gòn",
+  period: "Di sản kiến trúc đô thị",
+  type: "Công trình kiến trúc lịch sử",
+  description:
+    "Bưu điện Trung tâm Sài Gòn là một công trình nổi bật tại khu vực trung tâm thành phố, gắn với lịch sử liên lạc và diện mạo kiến trúc đô thị.",
+  story:
+    "Trong quá trình phát triển của Sài Gòn, hệ thống bưu chính và viễn thông giữ vai trò quan trọng trong việc chuyển thư từ, công văn và thông tin. Bưu điện Trung tâm Sài Gòn là một địa điểm quen thuộc của thành phố, nổi bật với không gian nội thất rộng, mái vòm và những chi tiết trang trí mang phong cách kiến trúc cuối thế kỷ XIX, đầu thế kỷ XX. Qua nhiều giai đoạn, công trình vừa phục vụ chức năng liên lạc vừa trở thành điểm tham quan, gặp gỡ và tìm hiểu lịch sử đô thị.",
+  value:
+    "Công trình là một phần của di sản kiến trúc Sài Gòn. Việc bảo tồn không chỉ nằm ở việc giữ lại mặt tiền hay nội thất mà còn cần lưu giữ câu chuyện về công năng, người sử dụng và sự biến đổi của khu vực xung quanh. Khi trình bày lịch sử công trình, cần dựa vào hồ sơ di sản và tư liệu chính thức để xác nhận các mốc xây dựng, tác giả thiết kế và những lần tu bổ.",
+  guide:
+    "Xin mời quý khách hình dung thời điểm một lá thư là phương tiện liên lạc quan trọng giữa những người sống cách xa nhau. Người gửi viết lời nhắn, ghi địa chỉ và trao lá thư cho hệ thống bưu chính; người nhận có thể chờ đợi nhiều ngày để được đọc tin. Ngày nay, tin nhắn có thể đến gần như tức thì, nhưng công trình bưu điện vẫn nhắc chúng ta về lịch sử kết nối con người. Khi quan sát kiến trúc, hãy chú ý cách không gian rộng và các chi tiết trang trí tạo nên cảm giác trang trọng của một công trình công cộng."
+},
+{
+  id: "market",
+  name: "Chợ Bến Thành",
+  period: "Không gian thương mại đô thị",
+  type: "Chợ truyền thống và biểu tượng thành phố",
+  description:
+    "Chợ Bến Thành là địa điểm thương mại nổi tiếng, gắn với hoạt động mua bán, giao lưu và hình ảnh quen thuộc của Thành phố Hồ Chí Minh.",
+  story:
+    "Chợ truyền thống không chỉ là nơi trao đổi hàng hóa. Đó còn là không gian gặp gỡ, trò chuyện và hình thành những mối quan hệ quen thuộc giữa người bán với người mua. Chợ Bến Thành đã trải qua nhiều thay đổi cùng quá trình phát triển của thành phố. Hình ảnh công trình với tháp đồng hồ ở mặt chính thường xuất hiện trong ảnh du lịch và tư liệu về Sài Gòn. Bên trong và xung quanh chợ, hoạt động kinh doanh phản ánh sự đa dạng của hàng hóa, ẩm thực và nhịp sống đô thị.",
+  value:
+    "Chợ có giá trị trong việc tìm hiểu lịch sử thương mại và đời sống thường nhật. Qua cách bày hàng, mặt hàng được bán, ngôn ngữ giao tiếp và thói quen mua sắm, chúng ta có thể thấy thành phố thay đổi như thế nào. Để hiểu đầy đủ lịch sử chợ, cần phân biệt các địa điểm chợ qua từng thời kỳ và kiểm chứng các mốc hình thành, di dời hoặc xây dựng lại bằng nguồn tư liệu đáng tin cậy.",
+  guide:
+    "Hãy thử tưởng tượng âm thanh của một khu chợ vào buổi sáng: tiếng người hỏi giá, tiếng bước chân, tiếng hàng hóa được sắp xếp và những cuộc trò chuyện ngắn. Chợ là nơi người dân không chỉ mua bán mà còn trao đổi tin tức và duy trì nhịp sống cộng đồng. Một công trình có thể thay đổi theo thời gian, nhưng ký ức về những lần đi chợ cùng gia đình thường vẫn còn nguyên trong tâm trí. Với Sài Gòn, chợ Bến Thành vừa là nơi giao thương vừa là hình ảnh giúp nhiều người nhận ra thành phố."
+},
+{
+  id: "ticket",
+  name: "Vé xe và giao thông xưa",
+  period: "Đời sống giao thông đô thị",
+  type: "Tư liệu đi lại",
+  description:
+    "Một chiếc vé giao thông là vật nhỏ bé nhưng có thể gợi mở câu chuyện về cách người dân di chuyển trong thành phố ở một thời kỳ nhất định.",
+  story:
+    "Giao thông đô thị luôn thay đổi cùng dân số, công nghệ và cách quy hoạch đường phố. Tùy từng thời kỳ, người dân có thể sử dụng nhiều loại phương tiện công cộng hoặc phương tiện cá nhân khác nhau. Vé đi lại, nếu còn giữ được thông tin về đơn vị phát hành, tuyến đường và thời điểm sử dụng, có thể cung cấp manh mối về hệ thống giao thông và thói quen đi lại. Một mảnh giấy nhỏ đôi khi giúp người nghiên cứu đặt câu hỏi lớn hơn về khoảng cách giữa nhà ở, nơi làm việc, trường học và khu buôn bán.",
+  value:
+    "Tư liệu giao thông góp phần tái hiện lịch sử sinh hoạt của người dân. Tuy nhiên, không thể xác định chính xác niên đại hay tuyến đường chỉ từ hình dáng của một chiếc vé. Cần đối chiếu chữ in, ký hiệu, giá vé, đơn vị phát hành và các tài liệu lưu trữ liên quan.",
+  guide:
+    "Quý khách hãy thử tưởng tượng hành trình mỗi ngày của một người dân Sài Gòn trong quá khứ. Họ có thể đi học, đến nơi làm việc, ghé chợ hoặc thăm người thân bằng những phương tiện phổ biến của thời đó. Chiếc vé là dấu vết của một chuyến đi đã kết thúc, nhưng cũng mở ra câu hỏi về cách thành phố vận hành. Nếu biết được tuyến đường và ngày tháng trên vé, chúng ta có thể đặt nó vào bản đồ lịch sử và hiểu rõ hơn về nhịp sống của người dân."
+},
+{
+  id: "map",
+  name: "Bản đồ Sài Gòn xưa",
+  period: "Tư liệu địa lý và đô thị",
+  type: "Bản đồ lịch sử",
+  description:
+    "Bản đồ lịch sử giúp người xem theo dõi tên đường, khu dân cư, công trình và sự mở rộng của thành phố qua các thời kỳ.",
+  story:
+    "Thành phố không đứng yên. Đường phố được mở rộng, tên gọi thay đổi, khu dân cư hình thành và những công trình mới xuất hiện. Bản đồ từ các thời kỳ khác nhau giúp người nghiên cứu so sánh các biến đổi ấy. Khi đặt một bản đồ cũ cạnh bản đồ hiện nay, ta có thể nhận ra những khu vực đã thay đổi nhiều và những địa điểm vẫn còn dấu tích. Bản đồ cũng cần được đọc trong bối cảnh lịch sử vì cách ghi địa danh, ranh giới và mục đích lập bản đồ có thể khác nhau.",
+  value:
+    "Bản đồ là nguồn tư liệu quan trọng để nghiên cứu lịch sử đô thị, địa danh và quy hoạch. Độ tin cậy phụ thuộc vào niên đại, người lập, tỷ lệ, chú giải và mục đích sử dụng. Không nên coi mọi bản đồ cũ là bản mô tả hoàn toàn chính xác; cần đối chiếu với hồ sơ lưu trữ, ảnh tư liệu và các nguồn khác.",
+  guide:
+    "Xin mời quý khách tưởng tượng mình đang đứng trước một tấm bản đồ Sài Gòn từ nhiều thập niên trước. Những đường nét trên giấy có thể chỉ ra nơi có đường giao thông, khu dân cư hay các công trình quan trọng. Mỗi tên gọi đều gắn với một bối cảnh nhất định. Khi so sánh với thành phố hôm nay, chúng ta không chỉ tìm kiếm điều gì đã mất đi mà còn tìm hiểu cách người dân thích nghi với sự thay đổi. Bản đồ giúp ký ức về không gian trở nên cụ thể và có thể nghiên cứu."
+}
+];
+
+/* =========================
+   2. HIỂN THỊ THÔNG TIN
+   ========================= */
+
+let selected = 0;
+const $ = id => document.getElementById(id);
+
+function renderArtifact(index) {
+  selected = index;
+  const a = artifacts[index];
+
+  $("itemNumber").textContent =
+    `HIỆN VẬT ${String(index + 1).padStart(2, "0")} / ${artifacts.length}`;
+  $("itemTitle").textContent = a.name;
+  $("itemMeta").textContent = a.period + " · " + a.type;
+  $("itemDescription").textContent = a.description;
+  $("itemStory").textContent = a.story;
+  $("itemValue").textContent = a.value;
+  $("itemGuide").textContent = a.guide;
+
+  document.querySelectorAll(".artifact-card").forEach((card, i) => {
+    card.classList.toggle("active", i === index);
+  });
+
+  objects3D.forEach((obj, i) => {
+    obj.traverse(part => {
+      if (!part.isMesh || !part.material) return;
+      const materials = Array.isArray(part.material)
+        ? part.material : [part.material];
+      materials.forEach(mat => {
+        if (mat.emissive) {
+          mat.emissive.set(i === index ? 0x38240b : 0x000000);
+          mat.emissiveIntensity = i === index ? 0.7 : 0;
+        }
+      });
+    });
+  });
+}
+
+const cards = $("cards");
+artifacts.forEach((a, i) => {
+  const button = document.createElement("button");
+  button.className = "artifact-card";
+  button.innerHTML =
+    `<span>HIỆN VẬT ${String(i + 1).padStart(2, "0")}</span>
+     <strong>${a.name}</strong>
+     <span>${a.type}</span>`;
+  button.addEventListener("click", () => {
+    stopSpeech();
+    renderArtifact(i);
+    focusObject(i);
+  });
+  cards.appendChild(button);
+});
+
+/* =========================
+   3. THUYẾT MINH GIỌNG ĐỌC
+   Phát nội dung của từng hiện vật.
+   ========================= */
+
+let queue = [];
+let queuePosition = 0;
+let speaking = false;
+let paused = false;
+let speechToken = 0;
+let currentUtterance = null;
+let selectedVoice = null;
+
+function loadVoices() {
+  if (!("speechSynthesis" in window)) return;
+  const voices = speechSynthesis.getVoices();
+  selectedVoice =
+    voices.find(v => v.lang.toLowerCase() === "vi-vn") ||
+    voices.find(v => v.lang.toLowerCase().startsWith("vi")) ||
+    null;
+}
+if ("speechSynthesis" in window) {
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
+}
+
+function setSpeechStatus(message) {
+  $("speechStatus").textContent = message;
+}
+
+function stopSpeech() {
+  speechToken++;
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  queue = [];
+  queuePosition = 0;
+  speaking = false;
+  paused = false;
+  currentUtterance = null;
+  $("progressBar").style.width = "0%";
+  $("queueStatus").textContent = "Đã dừng thuyết minh.";
+  setSpeechStatus("Thuyết minh đã dừng.");
+}
+
+function startQueue(indices) {
+  if (!("speechSynthesis" in window)) {
+    setSpeechStatus(
+      "Trình duyệt này không hỗ trợ giọng đọc. Hãy mở trang bằng Chrome hoặc Edge mới."
+    );
+    return;
+  }
+
+  speechSynthesis.cancel();
+  speechToken++;
+  const myToken = speechToken;
+
+  queue = indices.map(i => ({
+    index: i,
+    text:
+      artifacts[i].name + ". " +
+      artifacts[i].description + " " +
+      "Câu chuyện hiện vật. " + artifacts[i].story + " " +
+      "Giá trị lịch sử và văn hóa. " + artifacts[i].value + " " +
+      "Lời dẫn của hướng dẫn viên. " + artifacts[i].guide
+  }));
+
+  queuePosition = 0;
+  speaking = true;
+  paused = false;
+  speakNext(myToken);
+}
+
+function speakNext(myToken) {
+  if (myToken !== speechToken || !speaking) return;
+
+  if (queuePosition >= queue.length) {
+    speaking = false;
+    paused = false;
+    $("progressBar").style.width = "100%";
+    $("queueStatus").textContent = "Đã phát hết toàn bộ thuyết minh.";
+    setSpeechStatus("Hoàn thành chuyến tham quan.");
+    return;
+  }
+
+  const item = queue[queuePosition];
+  renderArtifact(item.index);
+
+  $("queueStatus").textContent =
+    `Đang nghe hiện vật ${queuePosition + 1}/${queue.length}: ` +
+    artifacts[item.index].name;
+  setSpeechStatus("Đang chuẩn bị giọng đọc tiếng Việt...");
+  $("progressBar").style.width =
+    `${(queuePosition / queue.length) * 100}%`;
+
+  const utterance = new SpeechSynthesisUtterance(item.text);
+  currentUtterance = utterance;
+  utterance.lang = "vi-VN";
+  if (selectedVoice) utterance.voice = selectedVoice;
+  utterance.rate = 0.92;
+  utterance.pitch = 1;
+  utterance.volume = 1;
+
+  utterance.onstart = () => {
+    if (myToken !== speechToken) return;
+    setSpeechStatus("Đang thuyết minh: " + artifacts[item.index].name);
+  };
+
+  utterance.onend = () => {
+    if (myToken !== speechToken) return;
+    queuePosition++;
+    $("progressBar").style.width =
+      `${(queuePosition / queue.length) * 100}%`;
+    speakNext(myToken);
+  };
+
+  utterance.onerror = event => {
+    if (myToken !== speechToken) return;
+    if (event.error === "canceled" || event.error === "interrupted") return;
+    speaking = false;
+    setSpeechStatus(
+      "Không phát được giọng đọc. Hãy thử tải lại trang hoặc kiểm tra cài đặt giọng nói của thiết bị."
+    );
+  };
+
+  speechSynthesis.speak(utterance);
+}
+
+$("playOne").addEventListener("click", () => startQueue([selected]));
+$("playAll").addEventListener("click", () =>
+  startQueue(artifacts.map((_, i) => i))
+);
+$("stopBtn").addEventListener("click", stopSpeech);
+$("stopAll").addEventListener("click", stopSpeech);
+
+$("pauseBtn").addEventListener("click", () => {
+  if (!("speechSynthesis" in window) || !speaking) return;
+  speechSynthesis.pause();
+  paused = true;
+  setSpeechStatus("Đã tạm dừng. Nhấn Tiếp tục để nghe tiếp.");
+});
+
+$("resumeBtn").addEventListener("click", () => {
+  if (!("speechSynthesis" in window) || !speaking) return;
+  speechSynthesis.resume();
+  paused = false;
+  setSpeechStatus("Đang tiếp tục thuyết minh.");
+});
+
+/* =========================
+   4. KHÔNG GIAN 3D
+   Các mô hình là minh họa.
+   ========================= */
+
+const host = $("scene");
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x151510);
+scene.fog = new THREE.Fog(0x151510, 15, 32);
+
+const camera = new THREE.PerspectiveCamera(
+  45, host.clientWidth / host.clientHeight, 0.1, 100
+);
+camera.position.set(0, 7, 13);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(host.clientWidth, host.clientHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+host.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.target.set(0, 1, 0);
+controls.minDistance = 5;
+controls.maxDistance = 20;
+controls.maxPolarAngle = Math.PI * 0.48;
+
+scene.add(new THREE.HemisphereLight(0xffe8c2, 0x34352e, 2));
+
+const keyLight = new THREE.DirectionalLight(0xffd9a0, 3);
+keyLight.position.set(5, 10, 7);
+keyLight.castShadow = true;
+scene.add(keyLight);
+
+const fillLight = new THREE.PointLight(0xb58a48, 35, 20);
+fillLight.position.set(-5, 5, 2);
+scene.add(fillLight);
+
+const floor = new THREE.Mesh(
+  new THREE.PlaneGeometry(30, 30),
+  new THREE.MeshStandardMaterial({ color: 0x24221b, roughness: 0.9 })
+);
+floor.rotation.x = -Math.PI / 2;
+floor.position.y = -0.04;
+floor.receiveShadow = true;
+scene.add(floor);
+
+const grid = new THREE.GridHelper(24, 24, 0x625235, 0x393329);
+grid.position.y = 0;
+scene.add(grid);
+
+const objects3D = [];
+const pickables = [];
+
+function material(color, roughness = 0.65, metalness = 0.1) {
+  return new THREE.MeshStandardMaterial({ color, roughness, metalness });
+}
+
+function mesh(geometry, mat, parent, x, y, z) {
+  const obj = new THREE.Mesh(geometry, mat);
+  obj.position.set(x, y, z);
+  obj.castShadow = true;
+  obj.receiveShadow = true;
+  parent.add(obj);
+  pickables.push(obj);
+  return obj;
+}
+
+function box(parent, x, y, z, sx, sy, sz, color) {
+  return mesh(
+    new THREE.BoxGeometry(sx, sy, sz),
+    material(color), parent, x, y, z
+  );
+}
+
+function cylinder(parent, x, y, z, rt, rb, h, color, segments = 24) {
+  return mesh(
+    new THREE.CylinderGeometry(rt, rb, h, segments),
+    material(color), parent, x, y, z
+  );
+}
+
+function sphere(parent, x, y, z, r, color) {
+  return mesh(
+    new THREE.SphereGeometry(r, 24, 16),
+    material(color), parent, x, y, z
+  );
+}
+
+function createPedestal(x, id) {
+  const group = new THREE.Group();
+  group.position.x = x;
+  group.userData.artifactIndex = id;
+  scene.add(group);
+
+  const base = new THREE.Mesh(
+    new THREE.CylinderGeometry(1.15, 1.3, 0.35, 40),
+    material(0x655136, 0.45, 0.25)
+  );
+  base.position.y = 0.18;
+  base.castShadow = true;
+  group.add(base);
+
+  const top = new THREE.Mesh(
+    new THREE.CylinderGeometry(1.1, 1.1, 0.12, 40),
+    material(0xd0b27a, 0.4, 0.2)
+  );
+  top.position.y = 0.42;
+  group.add(top);
+
+  const obj = new THREE.Group();
+  obj.position.y = 0.5;
+  obj.userData.artifactIndex = id;
+  group.add(obj);
+  objects3D[id] = obj;
+  return obj;
+}
+
+// 1. Radio
+{
+  const g = createPedestal(-5, 0);
+  box(g, 0, 0.65, 0, 1.35, 0.78, 0.48, 0x684a2d);
+  box(g, 0, 0.66, 0.25, 1.05, 0.48, 0.04, 0x9b754b);
+  box(g, -0.2, 0.67, 0.29, 0.55, 0.3, 0.035, 0x382d20);
+  for (let i = 0; i < 7; i++) {
+    box(g, -0.43 + i * 0.075, 0.67, 0.315, 0.025, 0.24, 0.01, 0xc3a06a);
+  }
+  cylinder(g, 0.43, 0.7, 0.3, 0.1, 0.1, 0.06, 0x2a2118, 24)
+    .rotation.x = Math.PI / 2;
+  sphere(g, 0.43, 0.7, 0.34, 0.045, 0xe0c58b);
+}
+
+// 2. Film camera
+{
+  const g = createPedestal(-3, 1);
+  box(g, 0, 0.82, 0, 1.0, 0.62, 0.55, 0x292d2b);
+  box(g, 0, 1.18, -0.02, 0.52, 0.15, 0.4, 0x3c403b);
+  cylinder(g, 0, 0.83, 0.36, 0.28, 0.28, 0.34, 0x171918, 32)
+    .rotation.x = Math.PI / 2;
+  cylinder(g, 0, 0.83, 0.55, 0.19, 0.19, 0.08, 0x8a8d83, 32)
+    .rotation.x = Math.PI / 2;
+  cylinder(g, 0, 0.83, 0.6, 0.13, 0.13, 0.04, 0x273d47, 32)
+    .rotation.x = Math.PI / 2;
+  cylinder(g, -0.33, 0.83, 0.29, 0.1, 0.1, 0.08, 0xaaa58e, 24)
+    .rotation.x = Math.PI / 2;
+}
+
+// 3. Post office-inspired building
+{
+  const g = createPedestal(-1, 2);
+  box(g, 0, 0.9, 0, 1.45, 0.95, 0.75, 0xbca77d);
+  box(g, 0, 1.42, 0, 1.55, 0.12, 0.84, 0x85724f);
+  box(g, 0, 1.65, 0, 0.48, 0.38, 0.65, 0xcab58a);
+  for (let i = -2; i <= 2; i++) {
+    box(g, i * 0.24, 0.84, 0.39, 0.11, 0.54, 0.07, 0x4c5a56);
+  }
+  box(g, 0, 0.56, 0.4, 0.28, 0.42, 0.1, 0x3e423a);
+  const roof = mesh(
+    new THREE.ConeGeometry(0.5, 0.38, 4),
+    material(0x766244), g, 0, 1.9, 0
+  );
+  roof.rotation.y = Math.PI / 4;
+}
+
+// 4. Market
+{
+  const g = createPedestal(1, 3);
+  box(g, 0, 0.8, 0, 1.5, 0.65, 0.8, 0x9a8258);
+  box(g, 0, 1.22, 0, 1.65, 0.1, 0.9, 0x65533b);
+  const roof = mesh(
+    new THREE.ConeGeometry(1.05, 0.55, 4),
+    material(0xbca16d), g, 0, 1.52, 0
+  );
+  roof.rotation.y = Math.PI / 4;
+  box(g, 0, 1.3, 0.45, 0.22, 0.38, 0.08, 0x4b4636);
+  for (let i = -2; i <= 2; i++) {
+    box(g, i * 0.22, 0.78, 0.43, 0.12, 0.4, 0.07, 0x66523b);
+  }
+}
+
+// 5. Transport ticket, shown as a framed card
+{
+  const g = createPedestal(3, 4);
+  box(g, 0, 0.95, 0, 0.95, 0.95, 0.12, 0x624e35);
+  box(g, 0, 0.95, 0.08, 0.75, 0.76, 0.04, 0xe0c995);
+  for (let i = 0; i < 5; i++) {
+    box(g, 0, 1.2 - i * 0.12, 0.11, 0.43 - i * 0.025, 0.025, 0.012, 0x6c5940);
+  }
+  cylinder(g, 0.25, 1.2, 0.13, 0.06, 0.06, 0.025, 0x8a6b3d, 16)
+    .rotation.x = Math.PI / 2;
+}
+
+// 6. Map
+{
+  const g = createPedestal(5, 5);
+  box(g, 0, 0.68, 0, 1.35, 0.12, 0.95, 0x5c4931);
+  box(g, 0, 0.76, 0, 1.15, 0.045, 0.76, 0xe3d2a7);
+  // Những nét đường minh họa trên bản đồ
+  box(g, -0.25, 0.79, 0, 0.04, 0.018, 0.57, 0x786d50);
+  box(g, 0.15, 0.79, 0, 0.04, 0.018, 0.57, 0x786d50);
+  box(g, 0, 0.79, 0.13, 0.88, 0.018, 0.035, 0x786d50);
+  box(g, 0, 0.79, -0.13, 0.88, 0.018, 0.035, 0x786d50);
+  box(g, 0.25, 0.8, 0.2, 0.22, 0.02, 0.12, 0x9e7a45);
+}
+
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+let pointerDown = null;
+
+renderer.domElement.addEventListener("pointerdown", event => {
+  pointerDown = { x: event.clientX, y: event.clientY };
+});
+
+renderer.domElement.addEventListener("pointerup", event => {
+  if (!pointerDown) return;
+
+  const distance = Math.hypot(
+    event.clientX - pointerDown.x,
+    event.clientY - pointerDown.y
+  );
+  pointerDown = null;
+
+  // Không chọn nhầm khi người dùng đang kéo để xoay mô hình.
+  if (distance > 6) return;
+
+  const rect = renderer.domElement.getBoundingClientRect();
+  pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+  pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+  raycaster.setFromCamera(pointer, camera);
+  const hits = raycaster.intersectObjects(
+    objects3D.flatMap(obj => obj.children.length
+      ? obj.children.flatMap(child => [child, ...child.children])
+      : [obj]),
+    true
+  );
+
+  if (!hits.length) return;
+
+  let node = hits[0].object;
+  while (node && node.userData.artifactIndex === undefined) {
+    node = node.parent;
+  }
+  if (node && node.userData.artifactIndex !== undefined) {
+    stopSpeech();
+    const index = node.userData.artifactIndex;
+    renderArtifact(index);
+    focusObject(index);
+  }
+});
+
+function focusObject(index) {
+  const obj = objects3D[index];
+  if (!obj) return;
+  const worldPosition = new THREE.Vector3();
+  obj.getWorldPosition(worldPosition);
+  controls.target.set(worldPosition.x, 1, 0);
+}
+
+$("resetView").addEventListener("click", () => {
+  camera.position.set(0, 7, 13);
+  controls.target.set(0, 1, 0);
+  controls.update();
+});
+
+function resize() {
+  const width = host.clientWidth;
+  const height = host.clientHeight;
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+  renderer.setSize(width, height);
+}
+window.addEventListener("resize", resize);
+
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+animate();
+
+renderArtifact(0);
+</script>
+</body>
+</html>
